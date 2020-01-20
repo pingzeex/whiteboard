@@ -5,42 +5,8 @@
   
   
   
-  var gateway = new Pingzee();
   
-  var whtboard = gateway.connectNode({
-    key: "abc",
-    type: "fullflow",
-    app_name: "Whiteboard",
-    multi: false,
-    channels: ["yo", "drawing", "test"]
-  });
-  
-  function myFunction() {
-    var key = prompt("Please enter node key", "Key Please");
-    if (key != null && key != "") {
-
-      console.log(key);
-      whtboard.key = key;
-      whtboard.init(function (err, status) {
-
-        if (err) {
-
-          console.log("[--Error found while connecting--]")
-          console.log(err)
-        } else {
-          console.log("[--- Connected ---]");
-          console.log(status);
-        }
-
-      });
-
-    } else {
-      myFunction();
-    }
-  }
-
-  myFunction();
-//   var socket = io();
+  var whtboard = PingzeeX.connect('987654321');
   var canvas = document.getElementsByClassName('whiteboard')[0];
   var colors = document.getElementsByClassName('color');
   var context = canvas.getContext('2d');
@@ -51,31 +17,18 @@
   var drawing = false;
 
 
-  whtboard.on("handshake", function (data) {
+  whtboard.on("data", function (data) {
 
-    console.log("Handshake data ", data);
-    if (data.success) {
+    if (data.type === 0) {
 
-      console.log("[--Whiteboard is now connected]");
-
-
-
-
-
-    } else {
-      console.log("[--Error handshake--]");
-
-      console.log(data);
-
-
+      console.log("[Handshake done]");
+      console.dir(data);
     }
-
-  });
-  whtboard.on("drawing", function (data) {
-
-    console.log("[Drawing data --] ", data);
-    onDrawingEvent(data);
-
+    if (data.type !== 0) {
+      console.log(data.from);
+      console.log("[Drawing data --] ", data.data);
+      onDrawingEvent(data.data);
+    }
   });
 
   whtboard.on("error", function (data) {
