@@ -6,7 +6,7 @@
   
   
   
-  var whtboard = PingzeeX.connect('987654321');
+  var whtboard = PingzeeX.connect('328ac5b0-a76f-4699-a95b-06764d9c9d99');
   var canvas = document.getElementsByClassName('whiteboard')[0];
   var colors = document.getElementsByClassName('color');
   var context = canvas.getContext('2d');
